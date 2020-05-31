@@ -1,0 +1,42 @@
+﻿@page "/"
+
+<div class="todo container">
+    <div class="new-task mb-5">
+        <input @bind="todoInput" type="text" class="new-task__input">
+        <button @onclick="AddNewTask" class="new-task__button">ADD</button>
+    </div>
+    <ul class="todo__list row justify-content-center">
+        @for (int i = 0; i < todoItems.Count; i++)
+        {
+            var task = todoItems[i];
+            var index = i;
+
+            <li class="todo__item d-flex justify-content-between col-10">
+                <label for="todoItem{@i}" class="todo__item-text">@task</label>
+                <div class="todo-actions">
+                    <input id="todoItem{@i}" type="checkbox" class="todo-actions__toggle" />
+                    <div class="todo-actions__close" @onclick="@(() => RemoveTask(index))">&times;</div>
+                </div>
+            </li>
+        }
+    </ul>
+</div>
+
+@code {
+    public string todoInput { get; set; }
+    public List<string> todoItems = new List<string>();
+
+    private void AddNewTask()
+    {
+        if (todoInput != "")
+        {
+            todoItems.Add(todoInput);
+            todoInput = "";
+        }
+    }
+
+    public void RemoveTask(int index)
+    {
+        todoItems.RemoveAt(index);
+    }
+}
